@@ -1,13 +1,14 @@
-resource "aws_api_gateway_rest_api" "private-mocks" {
-  name = "private-mocks"
+resource "aws_api_gateway_rest_api" "private_mocks" {
+  name = "private_mocks"
+  body = "data.template_file.private_mocks_swagger"
 
   endpoint_configuration {
-    types = ["PRIVATE"]
+    types = ["REGIONAL"]
   }
 }
 
-resource "aws_api_gateway_rest_api_policy" "private-mocks" {
-  rest_api_id = aws_api_gateway_rest_api.private-mocks.id
+resource "aws_api_gateway_rest_api_policy" "private_mocks" {
+  rest_api_id = aws_api_gateway_rest_api.private_mocks.id
 
   policy = <<EOF
 {
@@ -19,7 +20,7 @@ resource "aws_api_gateway_rest_api_policy" "private-mocks" {
         "AWS": "*"
       },
       "Action": "execute-api:Invoke",
-      "Resource": "${aws_api_gateway_rest_api.private-mocks.arn}",
+      "Resource": "${aws_api_gateway_rest_api.private_mocks.arn}",
       "Condition": {
         "IpAddress": {
           "aws:SourceIp": "123.123.123.123/32"
@@ -29,4 +30,13 @@ resource "aws_api_gateway_rest_api_policy" "private-mocks" {
   ]
 }
 EOF
+}
+
+data "local_file" private_mocks_swagger{
+  filename = "./services/api/example.1.yml"
+}
+
+resource "aws_api_gateway_deployment" "private_mocks_deployment" {
+  rest_api_id = "aws_api_gateway_rest_api.private_mocks.id"
+  stage_name  = "mocks"
 }

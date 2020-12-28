@@ -1,0 +1,183 @@
+openapi: "3.0.1"
+info:
+  title: "Private Mocks"
+  version: "v1.0"
+paths:
+  /get:
+    get:
+      operationId: mockGetGet
+      description: Simulated GET API, returns a fixed response
+      x-amazon-apigateway-integration:
+        statuscode: "200"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "{\"statusCode\": 200,\"message\": \"OK\"}"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+components:
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"
+  securitySchemes:
+    sigv4:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "awsSigv4"
+
+
+
+
+# servers:
+# - url: "https://ad35bq3zw8.execute-api.eu-west-2.amazonaws.com/{basePath}"
+#   variables:
+#     basePath:
+#       default: "/test"
+# paths:
+#   /private/sites:
+#     get:
+#       responses:
+#         200:
+#           description: "200 response"
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: "#/components/schemas/Empty"
+#       security:
+#       - sigv4: []
+#       x-amazon-apigateway-integration:
+#         responses:
+#           default:
+#             statusCode: "200"
+#             responseTemplates:
+#               application/json: "{\"message\": \"IAM GET API called - PRIVATELINK\
+#                 \ MOCK TEST\"}"
+#         requestTemplates:
+#           application/json: "{\"statusCode\": 200}"
+#         passthroughBehavior: "when_no_match"
+#         type: "mock"
+#     post:
+#       responses:
+#         200:
+#           description: "200 response"
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: "#/components/schemas/Empty"
+#       security:
+#       - sigv4: []
+#       x-amazon-apigateway-integration:
+#         responses:
+#           default:
+#             statusCode: "200"
+#             responseTemplates:
+#               application/json: "{\"message\": \"IAM POST API called - PRIVATELINK\
+#                 \ MOCK TEST\"}"
+#         requestTemplates:
+#           application/json: "{\"statusCode\": 200}"
+#         passthroughBehavior: "when_no_match"
+#         type: "mock"
+#   /public/sites:
+#     get:
+#       responses:
+#         200:
+#           description: "200 response"
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: "#/components/schemas/Empty"
+#       x-amazon-apigateway-integration:
+#         responses:
+#           default:
+#             statusCode: "200"
+#             responseTemplates:
+#               application/json: "{\"message\": \"PUBLIC GET API called - PRIVATELINK\
+#                 \ MOCK TEST\"}"
+#         requestTemplates:
+#           application/json: "{\"statusCode\": 200}"
+#         passthroughBehavior: "when_no_match"
+#         type: "mock"
+#     post:
+#       responses:
+#         200:
+#           description: "200 response"
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: "#/components/schemas/Empty"
+#       x-amazon-apigateway-integration:
+#         responses:
+#           default:
+#             statusCode: "200"
+#             responseTemplates:
+#               application/json: "{\"message\": \"PUBLIC POST API called - PRIVATELINK\
+#                 \ MOCK TEST\"}"
+#         requestTemplates:
+#           application/json: "{\"statusCode\": 200}"
+#         passthroughBehavior: "when_no_match"
+#         type: "mock"
+# components:
+#   schemas:
+#     Empty:
+#       title: "Empty Schema"
+#       type: "object"
+#   securitySchemes:
+#     sigv4:
+#       type: "apiKey"
+#       name: "Authorization"
+#       in: "header"
+#       x-amazon-apigateway-authtype: "awsSigv4"
+# x-amazon-apigateway-policy:
+#   Version: "2012-10-17"
+#   Statement:
+#   - Effect: "Allow"
+#     Principal: "*"
+#     Action: "execute-api:Invoke"
+#     Resource: "arn:aws:execute-api:eu-west-2:091640363878:ad35bq3zw8/*"
+#   - Effect: "Deny"
+#     Principal: "*"
+#     Action: "execute-api:Invoke"
+#     Resource: "arn:aws:execute-api:eu-west-2:091640363878:ad35bq3zw8/*"
+#     Condition:
+#       StringNotEquals:
+#         aws:SourceVPC: "vpc-0969915a29be4ae91"
+
+
+
+
+
+  # /post:
+  #   post:
+  #     operationId: mockPostPost
+  #     description: Authenticate user (either login, or continue session)
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Authenticate'
+  #     x-amazon-apigateway-integration:
+  #       uri: "arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${lambda_identity_arn}/invocations"
+  #       passthroughBehavior: "when_no_match"
+  #       httpMethod: "POST"
+  #       timeoutInMillis: ${lambda_identity_timeout}
+  #       type: "aws_proxy"
+  #     responses:
+  #       200:
+  #         $ref: '#/components/responses/lambda'
+  #       500:
+  #         $ref: '#/components/responses/500APIError'
+  #     tags:
+  #       - Identity
