@@ -1,7 +1,12 @@
 openapi: "3.0.1"
 info:
   title: "Private Mocks"
-  version: "v1.0"
+  version: "2017-04-20T04:08:08Z"
+servers:
+  - url: http://example.com/
+    variables:
+      basePath:
+        default: /v1
 paths:
   /get:
     get:
@@ -36,7 +41,7 @@ components:
       name: "Authorization"
       in: "header"
       x-amazon-apigateway-authtype: "awsSigv4"
-
+x-amazon-gateway-
 
 
 
